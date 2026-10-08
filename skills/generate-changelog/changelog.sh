@@ -53,11 +53,11 @@ declare -a FIXED_LIST=()
 declare -a CHANGED_LIST=()
 declare -a REMOVED_LIST=()
 
-# Conventional commit categorization regexes
-REG_ADDED="^(feat(\([^\)]*\))?!?:|add:|added:|new:)"
-REG_FIXED="^(fix(\([^\)]*\))?!?:|bugfix:|fixed:|patch:|security:)"
-REG_REMOVED="^(remove:|removed:|revert(\([^\)]*\))?!?:|deprecate:|deprecated:)"
-REG_CHANGED="^(refactor(\([^\)]*\))?!?:|perf(\([^\)]*\))?!?:|change:|chore(\([^\)]*\))?!?:|style(\([^\)]*\))?!?:|docs(\([^\)]*\))?!?:|build(\([^\)]*\))?!?:|ci(\([^\)]*\))?!?:|test(\([^\)]*\))?!?:)"
+# Categorization patterns: Supports Conventional Commits & Natural Imperative English
+REG_ADDED="^(feat(\([^\)]*\))?!?:|add(\([^\)]*\))?!?:|added:|new:|^add |^added |^create |^implement )"
+REG_FIXED="^(fix(\([^\)]*\))?!?:|bugfix(\([^\)]*\))?!?:|fixed:|patch:|security:|^fix |^fixed |^resolve |^resolved )"
+REG_REMOVED="^(remove(\([^\)]*\))?!?:|revert(\([^\)]*\))?!?:|removed:|deprecate:|deprecated:|^remove |^removed |^delete |^deleted |^revert )"
+REG_CHANGED="^(refactor(\([^\)]*\))?!?:|perf(\([^\)]*\))?!?:|change:|chore(\([^\)]*\))?!?:|style(\([^\)]*\))?!?:|docs(\([^\)]*\))?!?:|build(\([^\)]*\))?!?:|ci(\([^\)]*\))?!?:|test(\([^\)]*\))?!?:|^update |^updated |^change |^refactor |^upgrade )"
 
 TOTAL_COMMITS=0
 
@@ -95,7 +95,6 @@ TODAY=$(date +%Y-%m-%d)
   echo ""
   echo "## [${VERSION_HEADER}] - ${TODAY}"
   echo ""
-
   if [ "$TOTAL_COMMITS" -eq 0 ]; then
     echo "*No changes found in range ${COMMIT_RANGE}.*"
     echo ""
@@ -105,19 +104,16 @@ TODAY=$(date +%Y-%m-%d)
       printf '%s\n' "${ADDED_LIST[@]}"
       echo ""
     fi
-
     if [ ${#FIXED_LIST[@]} -gt 0 ]; then
       echo "### Fixed"
       printf '%s\n' "${FIXED_LIST[@]}"
       echo ""
     fi
-
     if [ ${#CHANGED_LIST[@]} -gt 0 ]; then
       echo "### Changed"
       printf '%s\n' "${CHANGED_LIST[@]}"
       echo ""
     fi
-
     if [ ${#REMOVED_LIST[@]} -gt 0 ]; then
       echo "### Removed"
       printf '%s\n' "${REMOVED_LIST[@]}"
